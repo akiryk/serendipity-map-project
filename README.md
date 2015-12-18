@@ -8,12 +8,11 @@
 4. If you are using Grunt, run `npm install` then `grunt`
 5. Open browser and to go `localhost:8000`
 
-
 ###Data
 
-This app uses csv data from the `data` directory (currently, stations4.csv). 
 *Important:* Data is not necessarily accurate and in some cases is simply made up. Do not rely on this data as meaningful for anything other than testing purposes.
 
+This app uses csv data from the `data` directory (currently, stations4.csv). 
 
 
 ###Notes
