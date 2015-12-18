@@ -12,6 +12,7 @@
 ###Data
 
 This app uses csv data from the `data` directory (currently, stations4.csv). 
+*Important:* Data is not necessarily accurate and in some cases is simply made up. Do not rely on this data as meaningful for anything other than testing purposes.
 
 
 
