@@ -1,17 +1,21 @@
 # Serendipity Day Mapping Visualizations
 
-*To Run Application*
+###To Run Application
 
-1. Install and run grunt (or run another local server)
+1. Clone repo to your computer
+2. `cd path/to/repo`
+3. If you aren't using Grunt, start a local server.
+4. If you are using Grunt, run `npm install` then `grunt`
+5. Open browser and to go `localhost:8000`
 
 
-*Data*
+###Data
 
 This app uses csv data from the `data` directory (currently, stations4.csv). 
 
 
 
-*Notes*
+###Notes
 
 • Explored d3.js, show site and examples
 • Show spreadsheets I used with help from Michelle
