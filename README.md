@@ -2,7 +2,7 @@
 
 ###Live map example
 
-Check out [http://nprds.github.io/wall-of-love/index-bak.html](live map example here)
+Check out [live map example here](http://nprds.github.io/wall-of-love/index-bak.html)
 
 ###To Run Application
 
