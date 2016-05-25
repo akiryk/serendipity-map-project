@@ -9710,128 +9710,73 @@ topojson = (function() {
 
       var dots = this.svg.selectAll("circle").data(_data);
 
-      var renderFunc;
+      var max, min;
 
-      if (type == 'TSR'){
-        renderFunc = 'renderByTSR';
-      } else {
-        renderFunc = 'renderByProducts';
+      switch(type){
+        case "TSR":
+          break;
+        case "products":
+          type = 'total products';
+          break;
+        default:
+          type = "TSR";
+          break;
       }
 
-      this[renderFunc](dots); //this[getScaleFn](dots);
+      // begin render by TSR:
+
+      var projection = Controller.getProjection();
+
+      var max = d3.max(Controller.getData(), function(d) {
+        return Number(d[type]);
+      });
+
+      var min = d3.min(Controller.getData(), function(d) {
+        return Number(d[type]);
+      });
+
+      var scale = d3.scale.linear(),
+          domain = scale.domain([min, max]),
+          range = scale.range([2, 36]);
+
+      dots.enter()
+        .append("circle")
+        .attr("cx", function (d) { return projection([d.longitude,d.latitude])[0]; })
+        .attr("cy", function (d) { return projection([d.longitude,d.latitude])[1]; })
+        .attr("r", 0)
+        .attr("fill", "hsla(205,75%,60%,1")
+        .transition()
+          .duration(1250)
+          .attr("r", function(d) {
+            return scale(d[type]);
+          });
+
+      dots.transition()
+        .delay(function(d, i){
+            return i;
+        })
+        .ease("bounce")
+        .duration(200)
+        .attr("r", function(d) {
+          return scale(d[type]);
+          });
 
       dots.on("mouseover", function(d){
-          d3.select(this).classed('active', true);
-          div.transition()
-            .duration(200)
-            .style("opacity", .9);
-          var markup = self.getTooltipMarkup(d);
-          div.html(markup)
-            .style("left", (d3.event.pageX) + "px")
-            .style("top", (d3.event.pageY - 28) + "px");
+        d3.select(this).classed('active', true);
+        div.transition()
+          .duration(200)
+          .style("opacity", .9);
+        var markup = self.getTooltipMarkup(d);
+        div.html(markup)
+          .style("left", (d3.event.pageX) + "px")
+          .style("top", (d3.event.pageY - 28) + "px");
         })
         .on("mouseout", function(d){
           d3.select(this).classed('active', false);
           div.transition()
             .duration(200)
             .style("opacity", 0);
-        })
-        .on("click", function(d){
-          console.dir(d['product names'].split(', '));
         });
-
-      // dots.each(function(d,i){
-      //   var node = d3.select(this);
-      //   var r = node.attr("r"),
-      //     nx1 = node.attr("cx") - r,
-      //     nx2 = node.attr("cx") + r,
-      //     ny1 = node.attr("cy") - r,
-      //     ny2 = node.attr("cy") + r;
-      // });
-    },
-
-    /**
-     * Render dot sizes based on TSR
-     * @param {obj} dots - data mapped to <circle> elements
-     * TODO: refactor out duplication between this function and renderbyproducts
-     */
-    renderByTSR: function(dots){
-
-      var projection = Controller.getProjection();
-
-      var max = d3.max(Controller.getData(), function(d) {
-        return Number(d.TSR);
-      });
-
-      var min = d3.min(Controller.getData(), function(d) {
-        return Number(d.TSR);
-      });
-
-      var scale = d3.scale.linear(),
-          domain = scale.domain([min, max]),
-          range = scale.range([2, 36]);
-
-      dots.enter()
-        .append("circle")
-        .attr("cx", function (d) { return projection([d.longitude,d.latitude])[0]; })
-        .attr("cy", function (d) { return projection([d.longitude,d.latitude])[1]; })
-        .attr("r", 0)
-        .attr("fill", "hsla(205,75%,60%,1")
-        .transition()
-          .duration(1250)
-          .attr("r", function(d) {
-            return scale(d.TSR);
-          });
-
-        dots.transition()
-          .delay(function(d, i){
-              return i*4;
-          })
-          .ease("bounce")
-          .duration(500)
-          .attr("r", function(d) {
-            return scale(d.TSR);
-            });
-    },
-
-    renderByProducts: function(dots){
-
-      var projection = Controller.getProjection();
-
-      var max = d3.max(Controller.getData(), function(d) {
-        return Number(d['total products']);
-      });
-
-      var min = d3.min(Controller.getData(), function(d) {
-        return Number(d['total products']);
-      });
-
-      var scale = d3.scale.linear(),
-          domain = scale.domain([min, max]),
-          range = scale.range([2, 36]);
-
-      dots.enter()
-        .append("circle")
-        .attr("cx", function (d) { return projection([d.longitude,d.latitude])[0]; })
-        .attr("cy", function (d) { return projection([d.longitude,d.latitude])[1]; })
-        .attr("r", 0)
-        .attr("fill", "hsla(205,75%,60%,1")
-        .transition()
-          .duration(1250)
-          .attr("r", function(d) {
-            return scale(d['total products']);
-          });
-
-        dots.transition()
-          .delay(function(d, i){
-              return i*4;
-          })
-          .ease("bounce")
-          .duration(500)
-          .attr("r", function(d) {
-            return scale(d['total products']);
-            });
-
     }
 
   }
