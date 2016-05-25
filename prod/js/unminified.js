@@ -9521,7 +9521,7 @@ topojson = (function() {
 
       this.makeMap();
 
-      // Initialize the views 
+      // Initialize the views
       View.init();
       NavigationView.init();
 
@@ -9540,7 +9540,7 @@ topojson = (function() {
         } else {
           self.data = data;
           View.render('TSR');
-        } 
+        }
 
       });
 
@@ -9570,7 +9570,7 @@ topojson = (function() {
         case 'springboard':
           View.filter('Springboard Donation Forms');
           break;
-        default: 
+        default:
           d3.selectAll('.hidden').classed('hidden', false);
       }
     },
@@ -9598,7 +9598,7 @@ topojson = (function() {
       this.projection = d3.geo.albersUsa();
 
       this.projection.scale(1000 * scale);
-      this.projection.translate([400*scale,250*scale]); 
+      this.projection.translate([400*scale,250*scale]);
 
       var path = d3.geo.path().projection(this.projection);
 
@@ -9630,12 +9630,12 @@ topojson = (function() {
     getTooltipMarkup: function(d){
 
       var mk = "<h3>title</h3>" +
-        "<h5>Uses numProducts DS products</h5>" + 
+        "<h5>Uses numProducts DS products</h5>" +
         "<img src='imgsrc'>";
 
       var mapObj = {
         title: d.name.replace(/-FM|-AM/, ''),
-        imgsrc: "http://media.npr.org/images/stations/logos/" + 
+        imgsrc: "http://media.npr.org/images/stations/logos/" +
               d.name.toLowerCase().replace('-','_') + ".gif",
         numProducts: d['total products']
       };
@@ -9653,8 +9653,8 @@ topojson = (function() {
     init: function(){
 
       // Create tool tip
-      this.tooltip = d3.select("body").append("div")   
-        .attr("class", "tooltip")               
+      this.tooltip = d3.select("body").append("div")
+        .attr("class", "tooltip")
         .style("opacity", 0);
 
       this.svg = d3.select("body").append("svg")
@@ -9687,8 +9687,8 @@ topojson = (function() {
      */
     filter: function(filterText){
       var dots = this.svg.selectAll("circle").data(Controller.getData());
-      dots.filter(function(d) { 
-          if (d[filterText]==0) { 
+      dots.filter(function(d) {
+          if (d[filterText]==0) {
             return this;
           } else {
             return null;
@@ -9710,7 +9710,7 @@ topojson = (function() {
 
       var dots = this.svg.selectAll("circle").data(_data);
 
-      var renderFunc; 
+      var renderFunc;
 
       if (type == 'TSR'){
         renderFunc = 'renderByTSR';
@@ -9720,34 +9720,34 @@ topojson = (function() {
 
       this[renderFunc](dots); //this[getScaleFn](dots);
 
-      dots.on("mouseover", function(d){ 
+      dots.on("mouseover", function(d){
           d3.select(this).classed('active', true);
-          div.transition()        
-            .duration(200)      
-            .style("opacity", .9); 
+          div.transition()
+            .duration(200)
+            .style("opacity", .9);
           var markup = self.getTooltipMarkup(d);
           div.html(markup)
-            .style("left", (d3.event.pageX) + "px")     
-            .style("top", (d3.event.pageY - 28) + "px");    
+            .style("left", (d3.event.pageX) + "px")
+            .style("top", (d3.event.pageY - 28) + "px");
         })
         .on("mouseout", function(d){
           d3.select(this).classed('active', false);
-          div.transition()        
-            .duration(200)      
-            .style("opacity", 0); 
+          div.transition()
+            .duration(200)
+            .style("opacity", 0);
         })
         .on("click", function(d){
           console.dir(d['product names'].split(', '));
         });
 
-      dots.each(function(d,i){
-        var node = d3.select(this);
-        var r = node.attr("r"),
-          nx1 = node.attr("cx") - r,
-          nx2 = node.attr("cx") + r,
-          ny1 = node.attr("cy") - r,
-          ny2 = node.attr("cy") + r;
-      });
+      // dots.each(function(d,i){
+      //   var node = d3.select(this);
+      //   var r = node.attr("r"),
+      //     nx1 = node.attr("cx") - r,
+      //     nx2 = node.attr("cx") + r,
+      //     ny1 = node.attr("cy") - r,
+      //     ny2 = node.attr("cy") + r;
+      // });
     },
 
     /**
@@ -9770,7 +9770,7 @@ topojson = (function() {
       var scale = d3.scale.linear(),
           domain = scale.domain([min, max]),
           range = scale.range([2, 36]);
-       
+
       dots.enter()
         .append("circle")
         .attr("cx", function (d) { return projection([d.longitude,d.latitude])[0]; })
@@ -9809,7 +9809,7 @@ topojson = (function() {
       var scale = d3.scale.linear(),
           domain = scale.domain([min, max]),
           range = scale.range([2, 36]);
-       
+
       dots.enter()
         .append("circle")
         .attr("cx", function (d) { return projection([d.longitude,d.latitude])[0]; })
@@ -9839,13 +9839,13 @@ topojson = (function() {
   var NavigationView = {
 
     init: function(){
-      
+
       $('[data-filter=all]').addClass('active');
 
       $('[data-filter]').on('click', function(e){
         if (!$(this).hasClass('active')){
           $('.active').removeClass('active');
-          $(this).addClass('active');  
+          $(this).addClass('active');
           Controller.switchFilters($(this).attr('data-filter'));
         }
       });
